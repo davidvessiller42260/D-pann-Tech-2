@@ -1,8 +1,8 @@
 {
   "settings": {
     "shop_name": "DÉPANN’TECH",
-    "email": "contact@depann-tech.fr",
-    "phone": "06 00 00 00 00",
+    "email": "david.vessiller42260@gmail.com",
+    "phone": "06 19 26 51 62",
     "address": "Votre adresse",
     "hours": "Lun–Ven : 9h00–18h00",
     "map": "",
@@ -14,20 +14,20 @@
   },
   "stats": [
     {
-      "value": "7j/7",
-      "label": "Conseils & assistance"
+      "value": "",
+      "label": ""
     },
     {
-      "value": "Rapide",
-      "label": "Prise en charge"
+      "value": "",
+      "label": ""
     },
     {
-      "value": "Pro",
-      "label": "Intervention soignée"
+      "value": "",
+      "label": ""
     },
     {
-      "value": "Sur devis",
-      "label": "Tarifs transparents"
+      "value": "",
+      "label": ""
     }
   ],
   "services": [
