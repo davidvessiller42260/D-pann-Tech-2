@@ -15,16 +15,16 @@
   },
   "stats": [
     {
-      "value": "98%",
-      "label": "Réparations réussies"
+      "value": "",
+      "label": ""
     },
     {
-      "value": "< 24h",
-      "label": "Délai moyen écrans"
+      "value": "",
+      "label": ""
     },
     {
-      "value": "100%",
-      "label": "Atelier local 42260"
+      "value": "",
+      "label": ""
     }
   ],
   "services": [
