@@ -1,0 +1,92 @@
+{
+  "settings": {
+    "shop_name": "DÉPANN’TECH",
+    "hero_title": "Réparation express & PC Gamer sur mesure",
+    "hero_text": "Diagnostic gratuit, pièces de qualité et réparations garanties.",
+    "phone": "06 19 26 51 62",
+    "email": "",
+    "address": "42260 Saint-Germain-Laval, Loire — Auvergne-Rhône-Alpes",
+    "hours": "Lun–Sam, 9h00–19h00",
+    "map": "https://www.google.com/maps?q=42260%20Saint-Germain-Laval&output=embed",
+    "footer_text": "Réparation informatique, téléphones, consoles et montage PC.",
+    "logo": "",
+    "hero_image": ""
+  },
+  "stats": [
+    {
+      "value": "98%",
+      "label": "Réparations réussies"
+    },
+    {
+      "value": "< 24h",
+      "label": "Délai moyen écrans"
+    },
+    {
+      "value": "100%",
+      "label": "Atelier local 42260"
+    }
+  ],
+  "services": [
+    {
+      "name": "Montage PC Gamer",
+      "description": "Configuration sur mesure, montage propre, installation et optimisation.",
+      "price": "Sur devis"
+    },
+    {
+      "name": "Téléphones",
+      "description": "Écrans, batteries, connectique et diagnostic des pannes courantes.",
+      "price": "Sur devis"
+    },
+    {
+      "name": "Consoles",
+      "description": "Diagnostic, nettoyage, réparation et remplacement de composants.",
+      "price": "Sur devis"
+    },
+    {
+      "name": "Ordinateurs",
+      "description": "Dépannage, nettoyage, SSD, RAM, système et récupération de données.",
+      "price": "Sur devis"
+    },
+    {
+      "name": "Tablettes",
+      "description": "Diagnostic et réparation selon la disponibilité des pièces.",
+      "price": "Sur devis"
+    }
+  ],
+  "products": [
+    {
+      "name": "SSD 500 Go",
+      "category": "Stockage",
+      "price": "49,90 €",
+      "old_price": "",
+      "stock": 10,
+      "description": "SSD rapide pour accélérer un ordinateur.",
+      "visible": true,
+      "image": ""
+    },
+    {
+      "name": "Mémoire RAM 16 Go",
+      "category": "Mémoire",
+      "price": "39,90 €",
+      "old_price": "",
+      "stock": 8,
+      "description": "Kit mémoire pour upgrade PC compatible.",
+      "visible": true,
+      "image": ""
+    },
+    {
+      "name": "Nettoyage PC complet",
+      "category": "Prestation",
+      "price": "39,00 €",
+      "old_price": "49,00 €",
+      "stock": 99,
+      "description": "Nettoyage intérieur, dépoussiérage et contrôle général.",
+      "visible": true,
+      "image": ""
+    }
+  ],
+  "pages": {
+    "about": "DÉPANN’TECH est un atelier local dédié au dépannage informatique et à la réparation de vos appareils. Nous privilégions un diagnostic clair, des pièces adaptées et un travail soigné.",
+    "reassurance": "✓ Diagnostic clair\n✓ Pièces de qualité\n✓ Atelier local\n✓ Conseils personnalisés"
+  }
+}
