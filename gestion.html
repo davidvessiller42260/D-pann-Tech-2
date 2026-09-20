@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Administration — DÉPANN’TECH</title>
+<style>
+:root{--bg:#070d16;--panel:#101a29;--panel2:#152338;--text:#f7fbff;--muted:#9aabc0;--line:rgba(255,255,255,.1);--a:#2de1cf;--danger:#ff6578;--warn:#ffc857}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,rgba(93,141,255,.12),transparent 30%),var(--bg);color:var(--text);font-family:Inter,system-ui,Arial}.wrap{width:min(1180px,94%);margin:auto}.top{padding:22px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px}h1{margin:0;font-size:27px}.muted,.help{color:var(--muted)}.panel,.item{background:var(--panel);border:1px solid var(--line);border-radius:18px}.panel{padding:22px}.grid{display:grid;grid-template-columns:220px 1fr;gap:18px;margin:20px 0}.side{padding:9px;height:max-content}.tab{display:block;padding:12px;border-radius:10px;color:#bdc9d8;cursor:pointer}.tab.active,.tab:hover{background:var(--panel2);color:#fff}.tabpane{display:none}.tabpane.active{display:block}.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}.field label{display:block;font-size:12px;font-weight:900;color:#b5c1d0;margin-bottom:6px}.field input,.field textarea,.field select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#09111d;color:#fff;outline:none}.field textarea{min-height:95px;resize:vertical}.btn{border:0;border-radius:11px;padding:11px 15px;background:linear-gradient(135deg,var(--a),#55c9ff);font-weight:950;color:#05131a;cursor:pointer}.btn.alt{background:#202d42;color:#fff}.btn.danger{background:#6d2835;color:#fff}.actions{display:flex;gap:8px;flex-wrap:wrap}.status{margin:13px 0;padding:12px;border-radius:11px;border:1px solid var(--line);white-space:pre-line}.ok{border-color:rgba(45,225,207,.4);color:#9af7ee}.err{border-color:#8f3547;color:#ffb0bb}.warn{border-color:rgba(255,200,87,.35);color:#ffe3a0}.item{padding:16px;margin:12px 0}.itemhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.media{display:grid;grid-template-columns:1fr 1fr;gap:14px}.preview{min-height:160px;border:1px dashed #33455c;border-radius:14px;display:grid;place-items:center;overflow:hidden;background:#0a111d;color:#71839a}.preview img{max-width:100%;max-height:220px;object-fit:contain}.upload{padding:14px;border:1px solid var(--line);border-radius:14px;background:#0b1421}.hint{font-size:11px;color:#7f91a8;line-height:1.5}.statrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.check{display:flex;align-items:center;gap:8px;font-size:12px}.sticky-save{position:sticky;bottom:12px;padding-top:10px;background:linear-gradient(transparent,var(--panel) 25%)}.security{padding:13px;border-radius:12px;background:rgba(255,200,87,.06);border:1px solid rgba(255,200,87,.18);font-size:12px;line-height:1.6;color:#e8d7ad}.connected{display:none;margin-top:12px}.connected.show{display:block}@media(max-width:800px){.grid,.row,.media{grid-template-columns:1fr}.side{display:flex;overflow:auto;gap:4px}.tab{white-space:nowrap}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div>
+    <h1>⚙ Administration DÉPANN’TECH</h1>
+    <div class="muted">Gestion du site, des textes, services, produits et photos.</div>
+  </div>
+  <div class="actions">
+    <a class="btn alt" href="index.html">🌐 Voir le site</a>
+    <button class="btn alt" type="button" id="logout">Déconnexion</button>
+  </div>
+</header>
+
+<div id="status"></div>
+
+<section id="setup" class="panel" style="margin-top:18px">
+  <h2>Connexion GitHub</h2>
+  <p class="help">Le token n'est <b>jamais enregistré dans le navigateur</b>. Il reste en mémoire pendant cette session. Après un rechargement complet de la page, il faudra le saisir à nouveau.</p>
+  <div class="security">
+    Pour le token GitHub fine-grained : dépôt sélectionné <b>D-pann-Tech-2</b> et <b>Contents → Read and write</b>. Metadata reste en lecture seule. GitHub confirme que la lecture de <code>data.json</code> demande Contents: read et sa modification Contents: write. citeturn0search0
+  </div>
+  <br>
+  <div class="row">
+    <div class="field"><label>Propriétaire / compte GitHub</label><input id="owner" value="davidvessiller42260" autocomplete="username"></div>
+    <div class="field"><label>Nom du dépôt</label><input id="repo" value="D-pann-Tech-2"></div>
+    <div class="field"><label>Branche</label><input id="branch" value="main"></div>
+    <div class="field"><label>Token GitHub</label><input id="token" type="password" autocomplete="new-password" placeholder="github_pat_..."></div>
+  </div>
+  <div class="actions">
+    <button class="btn" id="connect" type="button">🔐 Tester et charger les données</button>
+    <button class="btn alt" id="clearToken" type="button">Effacer le token</button>
+  </div>
+  <div id="connected" class="connected status ok"></div>
+</section>
+
+<div class="grid" id="app" style="display:none">
+<nav class="side panel">
+  <a class="tab active" data-tab="settings">Réglages</a>
+  <a class="tab" data-tab="services">Services</a>
+  <a class="tab" data-tab="products">Boutique</a>
+  <a class="tab" data-tab="pages">Pages</a>
+  <a class="tab" data-tab="demandes">📩 Demandes</a>
+</nav>
+
+<main class="panel">
+<section id="settings" class="tabpane active">
+<h2>Identité & images</h2>
+<div class="row">
+<div class="field"><label>Nom de l’entreprise</label><input id="shop_name"></div>
+<div class="field"><label>E-mail de réception des devis</label><input id="email" type="email"></div>
+<div class="field"><label>Téléphone</label><input id="phone"></div>
+<div class="field"><label>Adresse</label><input id="address"></div>
+<div class="field"><label>Horaires</label><input id="hours"></div>
+<div class="field"><label>URL Google Maps / embed</label><input id="map"></div>
+<div class="field"><label>Titre principal</label><input id="hero_title"></div>
+<div class="field"><label>Texte principal</label><input id="hero_text"></div>
+<div class="field" style="grid-column:1/-1"><label>Texte pied de page</label><input id="footer_text"></div>
+</div>
+<div class="media">
+<div class="upload"><b>Logo</b><p class="hint">PNG, JPG, WEBP ou SVG. Max 5 Mo.</p><input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"><div class="preview" id="logoPreview">Aucun logo</div><button class="btn" id="uploadLogo" type="button">Envoyer le logo</button></div>
+<div class="upload"><b>Photo principale / bannière</b><p class="hint">JPG, PNG ou WEBP. Max 5 Mo.</p><input id="heroFile" type="file" accept="image/png,image/jpeg,image/webp"><div class="preview" id="heroPreview">Aucune photo</div><button class="btn" id="uploadHero" type="button">Envoyer la photo</button></div>
+</div>
+<h3>Chiffres clés</h3><div id="stats"></div>
+<div class="sticky-save"><button class="btn" onclick="saveSettings()">Enregistrer les réglages</button></div>
+</section>
+
+<section id="services" class="tabpane"><h2>Services</h2><div id="servicesList"></div><div class="actions"><button class="btn" onclick="addService()">+ Ajouter</button><button class="btn" onclick="saveServices()">Enregistrer</button></div></section>
+
+<section id="products" class="tabpane"><h2>Boutique & photos produits</h2><div id="productsList"></div><div class="actions"><button class="btn" onclick="addProduct()">+ Ajouter un produit</button><button class="btn" onclick="saveProducts()">Enregistrer</button></div></section>
+
+<section id="pages" class="tabpane">
+<h2>Contenu</h2>
+<div class="field"><label>À propos</label><textarea id="about"></textarea></div>
+<div class="field"><label>Réassurance — une ligne par élément</label><textarea id="reassurance"></textarea></div>
+<button class="btn" onclick="savePages()">Enregistrer</button>
+</section>
+
+<section id="demandes" class="tabpane">
+<h2>📩 Demandes de devis</h2>
+<div class="item">
+<h3>Adresse de réception</h3>
+<p id="requestEmail" class="help">Connectez-vous puis configurez l'e-mail dans Réglages.</p>
+</div>
+<div class="item">
+<h3>Important</h3>
+<p class="help">Avec GitHub Pages seul, l'administration peut modifier le site, mais elle ne peut pas recevoir directement des formulaires dans une boîte de réception interne sans service serveur. Les demandes doivent donc être envoyées vers l'e-mail configuré par le formulaire du site.</p>
+<p class="help">Cette page affiche l'adresse configurée afin d'éviter toute confusion. Elle ne prétend pas créer une fausse boîte de réception.</p>
+</div>
+</section>
+</main>
+</div>
+</div>
+
+<script>
+'use strict';
+
+let D = null;
+let sessionToken = '';
+let dataSha = null;
+
+const $ = id => document.getElementById(id);
+
+function msg(text, ok=true, warn=false){
+  $('status').innerHTML = '<div class="status '+(ok ? 'ok' : (warn ? 'warn' : 'err'))+'">'+esc(text)+'</div>';
+}
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function cfg(){
+  return {
+    owner: $('owner').value.trim(),
+    repo: $('repo').value.trim(),
+    branch: $('branch').value.trim() || 'main'
+  };
+}
+
+function apiHeaders(){
+  if(!sessionToken) throw new Error('Token GitHub absent. Saisissez-le puis cliquez sur « Tester et charger les données ».');
+  return {
+    Accept:'application/vnd.github+json',
+    Authorization:'Bearer '+sessionToken,
+    'X-GitHub-Api-Version':'2022-11-28',
+    'Content-Type':'application/json'
+  };
+}
+
+async function api(url, options={}){
+  const r = await fetch(url, {...options, headers:{...apiHeaders(),...(options.headers||{})}});
+  let body = null;
+  try { body = await r.json(); } catch {}
+  if(!r.ok){
+    const detail = body && body.message ? body.message : 'Réponse HTTP '+r.status;
+    if(r.status===401) throw new Error('401 — GitHub refuse le token. Vérifiez que le token est encore valide et qu’il n’a pas été révoqué ou expiré.');
+    if(r.status===403) throw new Error('403 — Token accepté mais accès refusé. Vérifiez « Contents → Read and write » et que le dépôt D-pann-Tech-2 est bien sélectionné.');
+    if(r.status===404) throw new Error('404 — Dépôt ou fichier introuvable. Vérifiez le compte, le dépôt et la branche.');
+    throw new Error(r.status+' — '+detail);
+  }
+  return body;
+}
+
+function b64utf8(str){
+  const bytes = new TextEncoder().encode(str);
+  let bin='';
+  bytes.forEach(b=>bin+=String.fromCharCode(b));
+  return btoa(bin);
+}
+
+function fromB64(s){
+  const bin=atob(s.replace(/\n/g,''));
+  const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+async function loadData(){
+  const c=cfg();
+  if(!c.owner||!c.repo||!sessionToken) throw new Error('Renseignez le compte, le dépôt et le token GitHub.');
+  const j=await api('https://api.github.com/repos/'+encodeURIComponent(c.owner)+'/'+encodeURIComponent(c.repo)+'/contents/data.json?ref='+encodeURIComponent(c.branch));
+  if(!j || !j.content) throw new Error('GitHub a répondu sans contenu pour data.json.');
+  dataSha=j.sha;
+  return JSON.parse(fromB64(j.content));
+}
+
+async function saveData(message){
+  const c=cfg();
+  // On relit toujours le fichier juste avant l'écriture pour éviter un SHA périmé.
+  const latest=await api('https://api.github.com/repos/'+encodeURIComponent(c.owner)+'/'+encodeURIComponent(c.repo)+'/contents/data.json?ref='+encodeURIComponent(c.branch));
+  dataSha=latest.sha;
+  const body={
+    message:message || 'Mise à jour du site DÉPANN’TECH',
+    content:b64utf8(JSON.stringify(D,null,2)),
+    branch:c.branch,
+    sha:dataSha
+  };
+  const j=await api('https://api.github.com/repos/'+encodeURIComponent(c.owner)+'/'+encodeURIComponent(c.repo)+'/contents/data.json',{
+    method:'PUT',
+    body:JSON.stringify(body)
+  });
+  dataSha=j.content && j.content.sha ? j.content.sha : dataSha;
+  msg('✓ Modifications enregistrées sur GitHub.',true);
+}
+
+function setVal(id,value){ if($(id)) $(id).value=value ?? ''; }
+
+function fill(){
+  D.settings=D.settings||{};
+  D.stats=Array.isArray(D.stats)?D.stats:[];
+  D.services=Array.isArray(D.services)?D.services:[];
+  D.products=Array.isArray(D.products)?D.products:[];
+  D.pages=D.pages||{};
+  const s=D.settings;
+  ['shop_name','email','phone','address','hours','map','hero_title','hero_text','footer_text'].forEach(k=>setVal(k,s[k]||''));
+  setVal('about',D.pages.about||'');
+  setVal('reassurance',D.pages.reassurance||'');
+  $('stats').innerHTML=D.stats.map((x,i)=>'<div class="statrow"><div class="field"><label>Valeur '+(i+1)+'</label><input data-sv="'+i+'" value="'+esc(x.value)+'"></div><div class="field"><label>Libellé '+(i+1)+'</label><input data-sl="'+i+'" value="'+esc(x.label)+'"></div></div>').join('');
+  preview('logoPreview',s.logo);
+  preview('heroPreview',s.hero_image);
+  renderServices();
+  renderProducts();
+  updateRequestEmail();
+}
+
+function preview(id,url){
+  const el=$(id); if(!el)return;
+  if(url) el.innerHTML='<img src="'+esc(url)+'?v='+Date.now()+'" alt="Aperçu">';
+  else el.textContent=id==='logoPreview'?'Aucun logo':'Aucune photo';
+}
+
+function renderServices(){
+  $('servicesList').innerHTML=(D.services||[]).map((x,i)=>'<div class="item"><div class="itemhead"><b>Service '+(i+1)+'</b><button class="btn danger" onclick="delService('+i+')">Supprimer</button></div><div class="row"><div class="field"><label>Nom</label><input data-sn="'+i+'" value="'+esc(x.name)+'"></div><div class="field"><label>Prix</label><input data-sp="'+i+'" value="'+esc(x.price)+'"></div></div><div class="field"><label>Description</label><textarea data-sd="'+i+'">'+esc(x.description)+'</textarea></div></div>').join('')||'<p class="muted">Aucun service.</p>';
+}
+
+function renderProducts(){
+  $('productsList').innerHTML=(D.products||[]).map((x,i)=>'<div class="item"><div class="itemhead"><b>Produit '+(i+1)+'</b><button class="btn danger" onclick="delProduct('+i+')">Supprimer</button></div><div class="row"><div class="field"><label>Nom</label><input data-pn="'+i+'" value="'+esc(x.name)+'"></div><div class="field"><label>Catégorie</label><input data-pc="'+i+'" value="'+esc(x.category)+'"></div><div class="field"><label>Prix</label><input data-pp="'+i+'" value="'+esc(x.price)+'"></div><div class="field"><label>Ancien prix</label><input data-po="'+i+'" value="'+esc(x.old_price)+'"></div><div class="field"><label>Stock</label><input type="number" data-ps="'+i+'" value="'+(Number(x.stock)||0)+'"></div><div class="field"><label>URL / chemin image</label><input data-pi="'+i+'" value="'+esc(x.image)+'" placeholder="uploads/produit.jpg"></div></div><div class="field"><label>Description</label><textarea data-pd="'+i+'">'+esc(x.description)+'</textarea></div><div class="upload"><label>Nouvelle photo produit</label><input type="file" id="pf'+i+'" accept="image/png,image/jpeg,image/webp"><button class="btn alt" type="button" onclick="uploadProductImage('+i+')">Envoyer la photo</button> <span class="hint">Max 5 Mo</span></div><br><label class="check"><input type="checkbox" data-pv="'+i+'" '+(x.visible!==false?'checked':'')+'> Visible sur le site</label></div>').join('')||'<p class="muted">Aucun produit.</p>';
+}
+
+function qv(selector,fallback=''){
+  const el=document.querySelector(selector);
+  return el ? String(el.value ?? fallback) : fallback;
+}
+function qc(selector){
+  const el=document.querySelector(selector);
+  return !!(el&&el.checked);
+}
+
+function sync(){
+  if(!D)return;
+  D.services=(D.services||[]).map((x,i)=>({...x,name:qv(`[data-sn="${i}"]`,x.name||''),price:qv(`[data-sp="${i}"]`,x.price||''),description:qv(`[data-sd="${i}"]`,x.description||'')}));
+  D.products=(D.products||[]).map((x,i)=>({...x,name:qv(`[data-pn="${i}"]`,x.name||''),category:qv(`[data-pc="${i}"]`,x.category||''),price:qv(`[data-pp="${i}"]`,x.price||''),old_price:qv(`[data-po="${i}"]`,x.old_price||''),stock:Number(qv(`[data-ps="${i}"]`,x.stock||0))||0,image:qv(`[data-pi="${i}"]`,x.image||''),description:qv(`[data-pd="${i}"]`,x.description||''),visible:document.querySelector(`[data-pv="${i}"]`)?qc(`[data-pv="${i}"]`):x.visible!==false}));
+}
+
+async function saveSettings(){
+  try{
+    sync();
+    const s=D.settings;
+    ['shop_name','email','phone','address','hours','map','hero_title','hero_text','footer_text'].forEach(k=>s[k]=($(k)?.value||''));
+    D.stats=D.stats.map((x,i)=>({value:$(`[data-sv="${i}"]`)?.value||'',label:$(`[data-sl="${i}"]`)?.value||''}));
+    await saveData('Mise à jour des réglages DÉPANN’TECH');
+    updateRequestEmail();
+  }catch(e){msg(e.message,false)}
+}
+async function saveServices(){try{sync();await saveData('Mise à jour des services DÉPANN’TECH')}catch(e){msg(e.message,false)}}
+async function saveProducts(){try{sync();await saveData('Mise à jour de la boutique DÉPANN’TECH')}catch(e){msg(e.message,false)}}
+async function savePages(){try{sync();D.pages.about=$('about').value;D.pages.reassurance=$('reassurance').value;await saveData('Mise à jour des pages DÉPANN’TECH')}catch(e){msg(e.message,false)}}
+
+function addService(){sync();D.services.push({name:'Nouveau service',description:'Description du service',price:'Sur devis'});renderServices()}
+function addProduct(){sync();D.products.push({name:'Nouveau produit',category:'Catégorie',price:'0,00 €',old_price:'',stock:0,description:'Description',visible:true,image:''});renderProducts()}
+
+async function delService(i){if(!confirm('Supprimer ce service ?'))return;sync();D.services.splice(i,1);renderServices();await saveServices()}
+async function delProduct(i){if(!confirm('Supprimer ce produit ?'))return;sync();D.products.splice(i,1);renderProducts();await saveProducts()}
+
+async function uploadFile(file,path){
+  if(!file)throw new Error('Sélectionnez d’abord une image.');
+  if(file.size>5*1024*1024)throw new Error('Image trop lourde. Utilisez une image de moins de 5 Mo.');
+  const content=await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(String(fr.result).split(',')[1]);fr.onerror=rej;fr.readAsDataURL(file)});
+  const c=cfg();
+  let oldSha=null;
+  try{
+    const old=await api('https://api.github.com/repos/'+encodeURIComponent(c.owner)+'/'+encodeURIComponent(c.repo)+'/contents/'+path+'?ref='+encodeURIComponent(c.branch));
+    if(old&&old.sha)oldSha=old.sha;
+  }catch(e){ if(!String(e.message).startsWith('404')) throw e; }
+  const body={message:'Ajout d’une image DÉPANN’TECH',content,branch:c.branch};
+  if(oldSha)body.sha=oldSha;
+  await api('https://api.github.com/repos/'+encodeURIComponent(c.owner)+'/'+encodeURIComponent(c.repo)+'/contents/'+path,{method:'PUT',body:JSON.stringify(body)});
+  return path;
+}
+
+async function doUpload(kind){
+  try{
+    const f=$(kind==='logo'?'logoFile':'heroFile').files[0];
+    if(!f)throw new Error('Sélectionnez d’abord une image.');
+    const ext=(f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+    const path='uploads/'+kind+'-'+Date.now()+'.'+ext;
+    const p=await uploadFile(f,path);
+    D.settings[kind==='logo'?'logo':'hero_image']=p;
+    await saveData('Ajout image '+kind+' DÉPANN’TECH');
+    preview(kind==='logo'?'logoPreview':'heroPreview',p);
+    msg('✓ Image envoyée et enregistrée. Rechargez le site pour voir le résultat.',true);
+  }catch(e){msg(e.message,false)}
+}
+
+async function uploadProductImage(i){
+  try{
+    const f=$('pf'+i).files[0];
+    if(!f)throw new Error('Sélectionnez d’abord une photo produit.');
+    const ext=(f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+    const p=await uploadFile(f,'uploads/product-'+Date.now()+'-'+i+'.'+ext);
+    D.products[i].image=p;
+    sync();
+    await saveData('Ajout photo produit');
+    renderProducts();
+    msg('✓ Photo produit envoyée.',true);
+  }catch(e){msg(e.message,false)}
+}
+
+function updateRequestEmail(){
+  $('requestEmail').textContent=(D&&D.settings&&D.settings.email)?D.settings.email:'Aucune adresse configurée.';
+}
+
+function clearSession(){
+  sessionToken='';
+  D=null;
+  dataSha=null;
+  $('token').value='';
+  $('app').style.display='none';
+  $('connected').classList.remove('show');
+}
+
+$('connect').onclick=async()=>{
+  try{
+    sessionToken=$('token').value.trim();
+    if(!sessionToken)throw new Error('Saisissez le token GitHub.');
+    msg('Connexion à GitHub en cours…',true);
+    D=await loadData();
+    fill();
+    $('app').style.display='grid';
+    $('connected').textContent='✓ Connecté. Le token reste uniquement en mémoire pendant cette session.';
+    $('connected').classList.add('show');
+    msg('✓ Connexion réussie. Les données de data.json sont chargées.',true);
+  }catch(e){
+    $('app').style.display='none';
+    msg(e.message||'Erreur de connexion.',false);
+    sessionToken='';
+    $('token').value='';
+  }
+};
+
+$('clearToken').onclick=()=>{sessionToken='';$('token').value='';msg('Token effacé de la mémoire de cette page.',true)};
+$('logout').onclick=()=>{clearSession();location.reload()};
+
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tabpane').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  const pane=$(t.dataset.tab);
+  if(pane)pane.classList.add('active');
+}));
+
+$('uploadLogo').onclick=()=>doUpload('logo');
+$('uploadHero').onclick=()=>doUpload('hero');
+</script>
+</body>
+</html>

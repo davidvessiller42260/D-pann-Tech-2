@@ -1,0 +1,60 @@
+{
+  "settings": {
+    "shop_name": "DÉPANN’TECH",
+    "email": "contact@depann-tech.fr",
+    "phone": "06 00 00 00 00",
+    "address": "Votre adresse",
+    "hours": "Lun–Ven : 9h00–18h00",
+    "map": "",
+    "hero_title": "Dépannage informatique & solutions numériques",
+    "hero_text": "DÉPANN’TECH vous accompagne pour le dépannage, l’entretien et l’optimisation de vos équipements informatiques.",
+    "footer_text": "DÉPANN’TECH — Dépannage informatique et solutions numériques.",
+    "logo": "",
+    "hero_image": ""
+  },
+  "stats": [
+    {
+      "value": "7j/7",
+      "label": "Conseils & assistance"
+    },
+    {
+      "value": "Rapide",
+      "label": "Prise en charge"
+    },
+    {
+      "value": "Pro",
+      "label": "Intervention soignée"
+    },
+    {
+      "value": "Sur devis",
+      "label": "Tarifs transparents"
+    }
+  ],
+  "services": [
+    {
+      "name": "Dépannage informatique",
+      "price": "Sur devis",
+      "description": "Diagnostic et résolution des problèmes matériels, logiciels et réseau."
+    },
+    {
+      "name": "Installation & configuration",
+      "price": "Sur devis",
+      "description": "Installation de PC, périphériques, logiciels, imprimantes et connexions."
+    },
+    {
+      "name": "Nettoyage & optimisation",
+      "price": "Sur devis",
+      "description": "Nettoyage, optimisation du démarrage et amélioration des performances."
+    },
+    {
+      "name": "Conseil & accompagnement",
+      "price": "Sur devis",
+      "description": "Conseils pour choisir, sécuriser et faire évoluer votre matériel."
+    }
+  ],
+  "products": [],
+  "pages": {
+    "about": "Une assistance informatique simple, claire et adaptée à vos besoins.",
+    "reassurance": "Diagnostic avant intervention\nExplications claires\nDevis avant travaux\nAccompagnement personnalisé"
+  }
+}
